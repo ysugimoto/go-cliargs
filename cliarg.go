@@ -2,6 +2,7 @@ package cliarg
 
 import (
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -85,7 +86,11 @@ func (a *Arguments) GetOptionAsString(sign string) (string, bool) {
 
 func (a *Arguments) GetOptionAsInt(sign string) (int, bool) {
 	if value, ok := a.Options[sign]; ok {
-		return value.(int), true
+		if v, err := strconv.Atoi(value.(string)); err != nil {
+			return 0, false
+		} else {
+			return v, true
+		}
 	}
 	return 0, false
 }
@@ -97,9 +102,13 @@ func (a *Arguments) GetOptionAsBool(sign string) (bool, bool) {
 	return false, false
 }
 
-func (a *Arguments) GetOptionAsFloat(sign string) (float32, bool) {
+func (a *Arguments) GetOptionAsFloat(sign string) (float64, bool) {
 	if value, ok := a.Options[sign]; ok {
-		return value.(float32), true
+		if v, err := strconv.ParseFloat(value.(string), 32); err != nil {
+			return 0.0, false
+		} else {
+			return v, true
+		}
 	}
 	return 0.0, false
 }
