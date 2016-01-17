@@ -55,6 +55,9 @@ func (a *Arguments) Parse() {
 			if len(splitted) > 1 {
 				b := []byte(splitted[0])
 				a.Options[string(b[2:])] = splitted[1]
+			} else {
+				b := []byte(args[i])
+				a.Options[string(b[2:])] = ""
 			}
 
 		} else if alias, ok := a.Aliases[string(r[1])]; ok {
